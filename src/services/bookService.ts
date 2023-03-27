@@ -10,10 +10,11 @@ class BookService {
         return books
     }
 
-    async create(book: IBook) {
+    async create(req: any) {
         const {books} = store
-        const {title, description, authors, favorite, fileCover, fileName} = book
-        const newBook = new Book(title, description, authors, favorite, fileCover, fileName)
+        const {title, description, authors, favorite, fileCover, fileName} = req.body
+        const fileBook = req.file.path
+        const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook)
         books.push(newBook)
         return newBook
     }
@@ -24,16 +25,17 @@ class BookService {
         return idx !== -1 ? books[idx] : null
     }
 
-    async update(id: string, book: IBook) {
-        const {title, description, authors, favorite, fileCover, fileName} = book
+    async update(id: string, req: any) {
         const {books} = store
+        const {title, description, authors, favorite, fileCover, fileName} = req.body
+        const fileBook = req.file.path
         const idx = await this.findBookById(id, books)
         if (idx === -1) {
             return null
         }
         books[idx] = {
             ...books[idx],
-            title, description, authors, favorite, fileCover, fileName
+            title, description, authors, favorite, fileCover, fileName, fileBook
         }
         return books[idx]
     }

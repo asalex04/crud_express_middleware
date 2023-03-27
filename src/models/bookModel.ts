@@ -7,7 +7,8 @@ export interface IBook {
     authors: string,
     favorite: string,
     fileCover: string,
-    fileName: string
+    fileName: string,
+    fileBook: string
 }
 
 export default class Book {
@@ -19,6 +20,7 @@ export default class Book {
         public favorite: string,
         public fileCover: string,
         public fileName: string,
+        public fileBook: string,
         id = uuidv4()
     ) {
         this.id = id
