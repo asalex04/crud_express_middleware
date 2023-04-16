@@ -15,3 +15,8 @@ $ npm run dev
 ```
 $ npm start 
 ```
+### Docker
+```
+$  docker run -it --rm -e PORT=3000 -p 80:3000 asalex/books
+
+```
