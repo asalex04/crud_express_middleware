@@ -8,9 +8,7 @@ class BooksController {
             const bookData = await bookService.getAll()
             res.json(bookData)
         } catch (e) {
-            res
-                .status(500)
-                .json({ message: "Something went wrong" })
+            res.status(500).json(e)
         }
     }
 
@@ -21,8 +19,7 @@ class BooksController {
             res.json(newBook)
         } catch (e) {
             res
-                .status(500)
-                .json({ message: "Something went wrong" })
+                .status(500).json(e)
         }
     }
 
@@ -38,25 +35,7 @@ class BooksController {
                 )
         } catch (e) {
             res
-                .status(500)
-                .json({ message: "Something went wrong" })
-        }
-    }
-
-    async downloadBook(req: Request, res: Response) {
-        try {
-            const {id} = req.params
-            const bookData = await bookService.getOne(id)
-            if (!bookData) {
-                res.status(404),
-                res.json('404 | страница не найдена')
-            }
-            const file = `${bookData?.fileBook}`;
-            res.download(file)
-        } catch (e) {
-            res
-                .status(500)
-                .json({ message: "Something went wrong" })
+                .status(500).json(e)
         }
     }
 
@@ -65,15 +44,13 @@ class BooksController {
             const {id} = req.params
             const bookData = await bookService.update(id, req)
             bookData
-                ? res.json(bookData)
+                ? res.redirect(`api/books/${id}`)
                 : (
                     res.status(404),
                     res.json('404 | страница не найдена')
                 )
         } catch (e) {
-            res
-                .status(500)
-                .json({ message: "Something went wrong" })
+            res.status(500).json(e)
         }
     }
 
@@ -88,9 +65,7 @@ class BooksController {
                     res.json('404 | страница не найдена')
                 )
         } catch (e) {
-            res
-                .status(500)
-                .json({ message: "Something went wrong" })
+            res.status(500).json(e)
         }
     }
 }

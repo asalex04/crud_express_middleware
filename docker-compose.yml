@@ -1,18 +1,17 @@
+version: '3.1'
+
 services:
-  storage:
-    image: redis
-    volumes:
-      - ./counter/store:/data
-  counter:
-    build: ./counter
-    environment:
-      - PORT=3001
-      - REDIS_URL=redis://storage
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 88:3001
+      - '7000:7000'
     depends_on:
-      - storage
-  books:
-    build: ./books
+      - books_db
+
+  books_db:
+    image: mongo
+    restart: always
     ports:
-      - 7000:7000
+      - "27017:27017"

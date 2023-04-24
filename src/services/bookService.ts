@@ -1,58 +1,33 @@
-import Book, {IBook} from "../models/bookModel";
-
-const store = {
-    books: [] as IBook[]
-}
+import {Book, IBook} from "../models/book";
 
 class BookService {
     async getAll() {
-        const {books} = store
-        return books
+        return Book.find();
     }
 
     async create(req: any) {
-        const {books} = store
         const {title, description, authors, favorite, fileCover, fileName} = req.body
-        const fileBook = req.file.path
-        const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook)
-        books.push(newBook)
-        return newBook
+        const newBook = new Book({title, description, authors, favorite, fileCover, fileName})
+        return await newBook.save()
     }
 
     async getOne(id: string) {
-        const {books} = store
-        const idx = await this.findBookById(id, books)
-        return idx !== -1 ? books[idx] : null
+        return Book.findById(id);
     }
 
     async update(id: string, req: any) {
-        const {books} = store
         const {title, description, authors, favorite, fileCover, fileName} = req.body
-        const fileBook = req.file.path
-        const idx = await this.findBookById(id, books)
-        if (idx === -1) {
-            return null
-        }
-        books[idx] = {
-            ...books[idx],
-            title, description, authors, favorite, fileCover, fileName, fileBook
-        }
-        return books[idx]
+        const book = await Book.findByIdAndUpdate(id, {
+            title, description, authors, favorite, fileCover, fileName
+        })
+        return book
     }
 
     async delete(id: string) {
-        const {books} = store
-        const idx = await this.findBookById(id, books)
-        if (idx === -1) {
-            return null
-        }
-        books.splice(idx, 1)
+        await Book.deleteOne({_id: id})
         return 'Ok'
     }
 
-    async findBookById(id: string, books: IBook[]) {
-        return books.findIndex(el => el.id === id)
-    }
 }
 
 export default new BookService()
