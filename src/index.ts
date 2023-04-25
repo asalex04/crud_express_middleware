@@ -6,7 +6,7 @@ import error404 from "./middlewares/error-404";
 
 
 const PORT = process.env.PORT || 5000
-const URL_DB =`mongodb://books_db:27017/books`
+const URL_DB = process.env.URL_DB
 
 const app = express()
 app.use(express.json())
