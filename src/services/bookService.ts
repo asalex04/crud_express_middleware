@@ -21,7 +21,7 @@ class BookService {
 
     async getOne(id: string) {
         const {books} = store
-        const idx = await this.findBookById(id, books)
+        const idx = await this.findBookById(id)
         return idx !== -1 ? books[idx] : null
     }
 
@@ -29,7 +29,7 @@ class BookService {
         const {books} = store
         const {title, description, authors, favorite, fileCover, fileName} = req.body
         const fileBook = req.file.path
-        const idx = await this.findBookById(id, books)
+        const idx = await this.findBookById(id)
         if (idx === -1) {
             return null
         }
@@ -42,7 +42,7 @@ class BookService {
 
     async delete(id: string) {
         const {books} = store
-        const idx = await this.findBookById(id, books)
+        const idx = await this.findBookById(id)
         if (idx === -1) {
             return null
         }
@@ -50,7 +50,8 @@ class BookService {
         return 'Ok'
     }
 
-    async findBookById(id: string, books: IBook[]) {
+    async findBookById(id: string) {
+        const {books} = store
         return books.findIndex(el => el.id === id)
     }
 }
